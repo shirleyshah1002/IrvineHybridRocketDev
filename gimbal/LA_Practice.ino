@@ -1,3 +1,9 @@
+/*
+Changes made: Added new methods for second linear actuator
+Added code for Step 0: Startup
+*/
+
+  
 const int relay1 = 7;
 const int relay2 = 6;
 const int vcc = 8;
@@ -9,13 +15,21 @@ void setup()
   pinMode(relay2, OUTPUT);
   pinMode(vcc, OUTPUT);
 }
-
-void extend(){
+void extend1(){
   digitalWrite(relay1, HIGH);
   digitalWrite(relay2, LOW);
 }
 
-void retract(){
+void retract1(){
+  digitalWrite(relay3, LOW);
+  digitalWrite(relay4, HIGH);
+}
+void extend2(){
+  digitalWrite(relay3, HIGH);
+  digitalWrite(relay4, LOW);
+}
+
+void retract2(){
   digitalWrite(relay1, LOW);
   digitalWrite(relay2, HIGH);
 }
@@ -27,7 +41,8 @@ void stopactuator(){
 }
 
 void middle(){
-  extend();
+  extend1();
+  extend2();
   delay(1000);
 }
 
@@ -49,5 +64,14 @@ void loop() {
   stopactuator();
   middle();
   stopactuator();
+  
+  //Step 1: Startup
+  //Linear actuators will be powered on, retract for a full 2 seconds (max retraction)
+  //extend for 1 second (middle position). This will be considered the “zero” state
+  retract1(); 
+  retract2();
+  delay(2000); 
+  middle();
+
 
 }
